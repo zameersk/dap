@@ -1,0 +1,28 @@
+<!-- home.component.html -->
+<div class="container mt-4">
+
+  <input class="form-control mb-3"
+         placeholder="Search by title or author"
+         [value]="searchText()"
+  (input)="searchText.set($any($event.target).value)" />
+
+  <div class="mb-3">
+    <label class="me-3">
+      <input type="radio" name="genre" (change)="genre.set('')"> All
+    </label>
+    <label class="me-3">
+      <input type="radio" name="genre" (change)="genre.set('Fiction')"> Fiction
+    </label>
+    <label>
+      <input type="radio" name="genre" (change)="genre.set('Non-Fiction')"> Non-Fiction
+    </label>
+  </div>
+
+  <div class="row">
+    <app-book-card
+      *ngFor="let book of books()"
+      [book]="book">
+    </app-book-card>
+  </div>
+
+</div>
