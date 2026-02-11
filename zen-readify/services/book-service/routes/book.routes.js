@@ -2,6 +2,7 @@ const router = require('express').Router();
 const Book = require('../models/Book');
 
 router.get('/', async (_, res) => {
+  console.log('Fetching all books');
   res.json(await Book.find());
 });
 

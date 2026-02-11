@@ -8,6 +8,19 @@ const bookRoutes = require('./routes/book.routes');
 const app = express();
 
 /* =====================
+   Database
+===================== */
+const MONGO_URI = 'mongodb+srv://zameers932_db_user:KViYhtRzWTbH5Go8@cluster0.qs3hsjb.mongodb.net/?appName=Cluster0y';
+
+mongoose.connect(MONGO_URI)
+  .then(() => console.log('📚 Book Service connected to MongoDB'))
+  .catch(err => {
+    console.error('MongoDB connection failed', err);
+    process.exit(1);
+  });
+
+
+/* =====================
    Middleware
 ===================== */
 app.use(cors());
@@ -17,19 +30,12 @@ app.use(morgan('dev'));
 /* =====================
    Routes
 ===================== */
-app.use('/api/books', bookRoutes);
+app.use((req, res, next) => {
+  console.log(`📘 Book Service received request: ${req.method} ${req.url}`);
+  next();
+});   
+app.use('/', bookRoutes);
 
-/* =====================
-   Database
-===================== */
-const MONGO_URI = 'mongodb://localhost:27017/zen-readify';
-
-mongoose.connect(MONGO_URI)
-  .then(() => console.log('📚 Book Service connected to MongoDB'))
-  .catch(err => {
-    console.error('MongoDB connection failed', err);
-    process.exit(1);
-  });
 
 /* =====================
    Server

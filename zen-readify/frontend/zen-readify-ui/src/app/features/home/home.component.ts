@@ -15,12 +15,19 @@ export class HomeComponent {
   searchText = signal('');
   genre = signal('');
   books = signal<any[]>([]);
+  isLoading = signal(false);
 
   constructor(private bookService: BookService) {
     effect(() => {
-      this.bookService
-        .searchBooks(this.searchText(), this.genre())
-        .subscribe(data => this.books.set(data));
+      // this.bookService
+      //   .searchBooks(this.searchText(), this.genre())
+      //   .subscribe(data => this.books.set(data));
+
+      this.isLoading.set(true);
+      this.bookService.getAllBooks().subscribe(data => {
+        this.books.set(data);
+        this.isLoading.set(false);
+      });
     });
   }
 }
