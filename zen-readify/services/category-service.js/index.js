@@ -8,18 +8,22 @@ const app = express();
 app.use(cors());
 app.use(morgan('dev'));
 
-app.get('/api/categories', async (_, res) => {
+app.get('/', async (_, res) => {
   try {
-    const { data: books } = await axios.get(
-      'http://localhost:4001/api/books'
-    );
+    console
+.log('Fetching books for categories...');
+
+    const {data:books} = await axios.get(
+      'http://localhost:4001'
+   );
+
+    const categories = [...new Set(books.map(b => b.category))];
 
     res.json({
-      bestSellers: books.filter(b => b.category === 'Best Seller'),
-      newArrivals: books.filter(b => b.category === 'New Arrival'),
-      editorsPicks: books.filter(b => b.category === "Editor's Pick")
+      categories
     });
   } catch (err) {
+    console.error('Error fetching categories:', err.message);
     res.status(500).json({ message: 'Category fetch failed' });
   }
 });

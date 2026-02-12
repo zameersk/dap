@@ -7,7 +7,9 @@
     (input)="searchText.set($any($event.target).value)"
   />
 
-  <div class="mb-3 w-100 bg-dark p-3 rounded text-white d-flex justify-content-between align-items-center">
+  <div
+    class="mb-3 w-100 bg-dark p-3 rounded text-white d-flex justify-content-between align-items-center"
+  >
     <div>
       <label class="me-3"> <input type="radio" name="genre" (change)="genre.set('')" /> All </label>
       <label class="me-3">
@@ -49,12 +51,27 @@
         <p>No books found.</p>
       </div>
     </ng-container>
+  </div>
 
-    <div *ngIf="!isLoading() && books().length > 0" class="row w-100 mx-0">
-
-      <div class="col-md-3 mb-4" *ngFor="let book of books()">
-        <app-book-card [book]="book"> </app-book-card>
+  <div class="row">
+    <div class="col-12 mb-3" *ngFor="let category of categories()">
+      <h3 class="fw-bold">{{ category }}</h3>
+      <div class="row">
+        <ng-container *ngFor="let book of books()">
+          <div class="col-md-3 mb-4" *ngIf="book.category === category">
+            <app-book-card [book]="book"></app-book-card>
+          </div>
+        </ng-container>
       </div>
     </div>
   </div>
+
+  <!-- <div *ngIf="!isLoading() && books().length > 0" class="row w-100 mx-0">
+       @for(let category of categories()){
+        <div class="col-12 mb-3"> 
+          <h3 class="fw-bold">{{ category }}</h3> </div>
+         <div class="col-md-3 mb-4" *ngFor="let book of books()">
+               @if(book.category === category)<app-book-card [book]="book"> </app-book-card>
+         </div>
+       } -->
 </div>

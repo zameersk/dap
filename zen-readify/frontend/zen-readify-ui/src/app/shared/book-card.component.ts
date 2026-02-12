@@ -24,12 +24,21 @@ import { RouterLink } from '@angular/router';
           font-size: 0.7rem;
           margin-bottom: 0;
         }
+        
+        .badge  {
+    position: absolute;
+    background: transparent;
+    font-size: 0.6rem;
+    opacity: 77%;
+    padding: 5px;
+}
   `,
   template: `
     <div class="mb-4">
       <div class="card h-80 shadow-sm max-h-80"
            [routerLink]="['/books', book._id]">
         <img loading="lazy" [src]="book.imageUrl" class="card-img-top" alt="{{ book.title }}" width="100%" height="150" style="object-fit: cover;">
+        <span class="badge text-bg-secondary">{{ book.category }}</span>
         <div class="card-body">
           <h6 class="fw-bold">{{ book.title }}</h6>
           <p class="text-muted small">{{ book.author }}</p>
