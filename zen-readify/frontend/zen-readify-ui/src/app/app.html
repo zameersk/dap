@@ -1,3 +1,4 @@
 
-<app-header/>
+@if(spinnerService.getStatus()) { <app-spinner /> }
+<app-header />
 <router-outlet />

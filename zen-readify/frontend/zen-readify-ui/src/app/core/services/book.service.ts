@@ -1,31 +1,37 @@
 // core/services/book.service.ts
-import { Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { firstValueFrom, of } from 'rxjs';
+import { firstValueFrom, map, of } from 'rxjs';
+import { HttpService } from './http.service';
 
 @Injectable({ providedIn: 'root' })
 export class BookService {
 
-  private API = 'http://localhost:3000/api';
+  httpService = inject(HttpService)
 
-  constructor(private http: HttpClient) {}
+  distinctGeneres:any = signal([]);
 
   searchBooks(query: string, genre: string) {
-    return this.http.get<any[]>(
-      `${this.API}/search?q=${query}&genre=${genre}`
-    );
+    return firstValueFrom(this.httpService.searchBooks(query,genre));
   }
 
   getBookById(id: string) {
-    return of({  title: 'Mock Book Title', author: 'Mock Author', imageUrl: 'https://via.placeholder.com/150' });
-   // return this.http.get(`${this.API}/books/${id}`);
+   return this.httpService.getBookById(id);
   }
 
   getAllBooks() {
-    return firstValueFrom(this.http.get<any[]>(this.API+ '/books'));
+    return firstValueFrom(this.httpService.getAllBooks().pipe(map((res)=>{
+       const allGenered = new Set(res.map(book => book.genre));
+       this.distinctGeneres.set([...allGenered]);
+       return res;
+    })))
   }
 
   getAllCategories() {
-    return firstValueFrom(this.http.get<string[]>(`${this.API}/categories`));
+    return firstValueFrom(this.httpService.getAllCategories());
+  }
+
+  getAllGenere(){
+    return this.distinctGeneres;
   }
 }

@@ -1,64 +1,38 @@
-<!-- home.component.html -->
 <div class="container mt-4">
   <input
     class="form-control mb-3"
     placeholder="Search by title or author"
     [value]="searchText()"
     (input)="searchText.set($any($event.target).value)"
+    #search
   />
 
   <div
-    class="mb-3 w-100 bg-dark p-3 rounded text-white d-flex justify-content-between align-items-center"
+    class="mb-3 w-100 bg-light p-3 rounded text-white d-flex justify-content-between align-items-center"
   >
-    <div>
-      <label class="me-3"> <input type="radio" name="genre" (change)="genre.set('')" /> All </label>
-      <label class="me-3">
-        <input type="radio" name="genre" (change)="genre.set('Fiction')" /> Fiction
-      </label>
-      <label>
-        <input type="radio" name="genre" (change)="genre.set('Non-Fiction')" /> Non-Fiction
-      </label>
-    </div>
+    <div class="text-black">
 
-    <div class="justify-content-end">
-      <div class="dropdown">
-        <button
-          class="btn btn-secondary dropdown-toggle"
-          type="button"
-          data-bs-toggle="dropdown"
-          aria-expanded="true"
-        >
-          Category
-        </button>
-        <ul class="dropdown-menu">
-          <li><a class="dropdown-item">All</a></li>
-          <li><a class="dropdown-item">Best Sellers</a></li>
-          <li><a class="dropdown-item">New Arrivals</a></li>
-          <li><a class="dropdown-item">Editor's Picks</a></li>
-        </ul>
-      </div>
+      <form>
+        <ng-container *ngFor="let genre of genres()">
+          <label class="me-3">
+            <input type="radio" (change)="filterByGenre()" [value]="genre" [(ngModel)]="selectedGenre" name="genre" /> {{ genre }}
+          </label>
+        </ng-container>
+      </form>
+
     </div>
   </div>
 
-  <div class="row">
-    <ng-container>
-      <div *ngIf="isLoading()" class="col-12 text-center">
-        <div class="spinner-border" role="status">
-          <span class="visually-hidden">Loading...</span>
-        </div>
-      </div>
-      <div *ngIf="!isLoading() && books().length === 0" class="col-12 text-center">
-        <p>No books found.</p>
-      </div>
-    </ng-container>
-  </div>
+  @if(!spinnerService.getStatus() && books().length === 0){
+   <app-fallback [message]="'No books found.'" />
+  }
 
   <div class="row">
-    <div class="col-12 mb-3" *ngFor="let category of categories()">
-      <h3 class="fw-bold">{{ category }}</h3>
+    <div class="col-12 mb-3" *ngFor="let cbook of books()">
+      @if(cbook[1].length) { <h3 class="fw-bold">{{ cbook[0] }}</h3> }
       <div class="row">
-        <ng-container *ngFor="let book of books()">
-          <div class="col-md-3 mb-4" *ngIf="book.category === category">
+        <ng-container *ngFor="let book of cbook[1]">
+          <div class="col-md-3 mb-4">
             <app-book-card [book]="book"></app-book-card>
           </div>
         </ng-container>
@@ -66,12 +40,4 @@
     </div>
   </div>
 
-  <!-- <div *ngIf="!isLoading() && books().length > 0" class="row w-100 mx-0">
-       @for(let category of categories()){
-        <div class="col-12 mb-3"> 
-          <h3 class="fw-bold">{{ category }}</h3> </div>
-         <div class="col-md-3 mb-4" *ngFor="let book of books()">
-               @if(book.category === category)<app-book-card [book]="book"> </app-book-card>
-         </div>
-       } -->
 </div>

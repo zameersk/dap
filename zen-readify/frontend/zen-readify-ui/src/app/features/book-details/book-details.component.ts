@@ -3,11 +3,12 @@ import { Component, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BookService } from '../../core/services/book.service';
 import { NgIf } from '@angular/common';
+import { ReviewComponent } from '../../shared/components/reviews/review.component';
 
 @Component({
   standalone: true,
   templateUrl: './book-details.component.html',
-  imports:[NgIf]
+  imports:[NgIf, ReviewComponent]
 })
 export class BookDetailsComponent {
 

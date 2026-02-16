@@ -1,0 +1,25 @@
+    .card {
+      transition: transform 0.2s;
+    }
+    .card:hover {
+      transform: scale(1.05);
+    }
+      .card{
+       cursor: pointer;
+      }
+      h6 {
+        font-size: 0.8rem;
+        margin-bottom: 0.5rem;
+      }
+        p {
+          font-size: 0.7rem;
+          margin-bottom: 0;
+        }
+        
+        .badge  {
+    position: absolute;
+    background: transparent;
+    font-size: 0.6rem;
+    opacity: 77%;
+    padding: 5px;
+}
