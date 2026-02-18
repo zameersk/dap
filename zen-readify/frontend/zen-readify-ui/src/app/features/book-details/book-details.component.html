@@ -43,13 +43,12 @@
           </p>
 
           <!-- Placeholder until review service UI is wired -->
-          <!-- <div class="alert alert-light">
+          <div class="alert alert-light">
             No reviews yet. Be the first to review this book.
-          </div> -->
+          </div>
 
-          @if(book()) {
-          @if(book().reviews.length) { @for(review of book().reviews; track review._id){<app-review [data]="review"></app-review>} }
-          }
+          @if(reviews().length) { @for(review of reviews(); track review._id){<app-review [data]="review"></app-review>} }
+          
         </div>
       </div>
     </div>

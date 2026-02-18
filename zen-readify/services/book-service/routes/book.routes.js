@@ -1,21 +1,9 @@
 const router = require('express').Router();
-const Book = require('../models/Book');
-require('../models/Review')
+const controller = require('../controller/book.controller')
 
-router.get('/', async (_, res) => {
-  console.log('Fetching all books');
-  res.json(await Book.find());
-});
+router.get('/', controller.getAllBooks);
 
-router.get('/:id', async (req, res) => {
-  try {
-    res.json(await Book.findById(req.params.id).populate('reviews').exec());
-  } catch (error) {
-    console.log(error)
-    return res.status(500).json({
-      error:'Internal Server Error'
-    })
-  }
-});
+router.get('/:id', controller.getBook);
+
 
 module.exports = router;

@@ -1,23 +1,13 @@
 const express = require('express');
-const mongoose = require('mongoose');
+const app = express();
 const cors = require('cors');
 const morgan = require('morgan');
 
+require('dotenv').config();
+require('./dbCon');
+
 const bookRoutes = require('./routes/book.routes');
 
-const app = express();
-
-/* =====================
-   Database
-===================== */
-const MONGO_URI = 'mongodb+srv://zameers932_db_user:KViYhtRzWTbH5Go8@cluster0.qs3hsjb.mongodb.net/?appName=Cluster0y';
-
-mongoose.connect(MONGO_URI)
-  .then(() => console.log('📚 Book Service connected to MongoDB'))
-  .catch(err => {
-    console.error('MongoDB connection failed', err);
-    process.exit(1);
-  });
 
 
 /* =====================
@@ -34,6 +24,7 @@ app.use((req, res, next) => {
   console.log(`📘 Book Service received request: ${req.method} ${req.url}`);
   next();
 });   
+
 app.use('/', bookRoutes);
 
 

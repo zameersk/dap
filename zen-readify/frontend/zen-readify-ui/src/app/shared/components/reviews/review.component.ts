@@ -5,16 +5,17 @@ import { Component, input } from "@angular/core";
     standalone:true,
     template:`
     <div class="media">
-        <img src="..." class="align-self-start mr-3" alt="...">
+
             <div class="media-body">
-                <h5 class="mt-0">{{ data?.user }} </h5>
-                <p>{{ data?.review }}</p>
+                <h5 class="mt-0">Test</h5>
+                <p>{{ data()?.comment }}</p>
+                <p>Rating : {{data()?.rating}}</p>
             </div>
     </div>
     `
 })
 export class ReviewComponent{
 
-    data: any = input({user:'', review:''});
+    data: any = input({comment:'T', rating:'T'});
 
 }

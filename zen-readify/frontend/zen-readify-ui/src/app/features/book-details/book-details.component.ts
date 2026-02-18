@@ -1,5 +1,5 @@
 // features/book-details/book-details.component.ts
-import { Component, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BookService } from '../../core/services/book.service';
 import { NgIf } from '@angular/common';
@@ -10,13 +10,22 @@ import { ReviewComponent } from '../../shared/components/reviews/review.componen
   templateUrl: './book-details.component.html',
   imports:[NgIf, ReviewComponent]
 })
-export class BookDetailsComponent {
+export class BookDetailsComponent implements OnInit {
 
   book = signal<any>(null);
 
-  constructor(route: ActivatedRoute, bookService: BookService) {
-    const id = route.snapshot.params['id'];
-    bookService.getBookById(id)
-      .subscribe(data => this.book.set(data));
+  route = inject(ActivatedRoute);
+  bookService = inject(BookService);
+  reviews:any = signal([]);
+
+ async ngOnInit() {
+        const id = this.route.snapshot.params['id'];
+        const data = await this.bookService.getBookById(id)
+        console.log(data)
+        this.book.set(data);
+        const reviews = await this.bookService.getBookReviews(id);
+        console.log(reviews)
+        this.reviews.set(reviews);
+        
   }
 }

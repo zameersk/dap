@@ -16,7 +16,7 @@ export class BookService {
   }
 
   getBookById(id: string) {
-   return this.httpService.getBookById(id);
+   return firstValueFrom(this.httpService.getBookById(id));
   }
 
   getAllBooks() {
@@ -34,4 +34,9 @@ export class BookService {
   getAllGenere(){
     return this.distinctGeneres;
   }
+
+  getBookReviews(bookId: string){
+    return firstValueFrom(this.httpService.getBookReviews(bookId))
+  }
+
 }

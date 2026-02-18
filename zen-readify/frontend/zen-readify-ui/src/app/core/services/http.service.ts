@@ -13,7 +13,7 @@ export class HttpService {
     spinnerService = inject(SpinnerService);
 
     searchBooks(query: string, genre: string) {
-         if (!this.spinnerService.getStatus()) this.spinnerService.startSpinner();
+        if (!this.spinnerService.getStatus()) this.spinnerService.startSpinner();
         return this.http.get<any[]>(
             `${this.API}/search?q=${query}&genre=${genre}`
         ).pipe(map((res) => {
@@ -23,7 +23,7 @@ export class HttpService {
     }
 
     getBookById(id: string) {
-         if (!this.spinnerService.getStatus()) this.spinnerService.startSpinner();
+        if (!this.spinnerService.getStatus()) this.spinnerService.startSpinner();
         return this.http.get(`${this.API}/books/${id}`).pipe(catchError(this.errorHandler('get single book')), map((res) => {
             if (this.spinnerService.getStatus()) this.spinnerService.stopSpinner();
             return res;
@@ -46,7 +46,15 @@ export class HttpService {
         }));;
     }
 
-    
+    getBookReviews(bookId: string) {
+        if (!this.spinnerService.getStatus()) this.spinnerService.startSpinner();
+        return this.http.get<string[]>(`${this.API}/reviews/${bookId}`).pipe(map((res) => {
+            if (this.spinnerService.getStatus()) this.spinnerService.stopSpinner();
+            return res;
+        }));;
+    }
+
+
 
     errorHandler(operation = 'operation') {
         return (err: HttpErrorResponse) => throwError(() => {
